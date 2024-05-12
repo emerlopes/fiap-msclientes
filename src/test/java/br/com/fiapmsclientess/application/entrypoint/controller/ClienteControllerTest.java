@@ -29,7 +29,7 @@ class ClienteControllerTest {
     CadastrarClienteUseCase cadastrarClienteUseCase;
 
     @Test
-    void deve_cadastrar_cliente_com_sucesso() {
+    void deveCadastrarClienteComSucesso() {
 
         // ARRANGE
         final var clienteRequestDTO = criarClienteRequestDTO();

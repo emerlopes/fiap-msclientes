@@ -29,7 +29,7 @@ class CadastrarClienteUseCaseImplTest {
     ClienteDomainRepository clienteDomainRepository;
 
     @Test
-    void deve_cadastrar_cliente() {
+    void deveCadastrarCliente() {
         // Arrange
         final var clienteDomainEntity = criarClienteDomainEntity();
 

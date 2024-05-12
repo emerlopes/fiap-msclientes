@@ -30,7 +30,7 @@ class ClienteDomainServiceTest {
     ClinteRepository clinteRepository;
 
     @Test
-    void deve_cadastrar_cliente() {
+    void deveCadastrarCliente() {
         // Arrange
         final var clienteDomainEntity = criarClienteDomainEntity();
         final var entidade = criarEntity(clienteDomainEntity);
