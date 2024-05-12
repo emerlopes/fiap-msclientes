@@ -16,7 +16,7 @@
 - [x] Criar a classe de entidade `Cliente` com atributos como nome, endereço, telefone e email - **Estimativa: 1 hora**
 - [x] Implementar o repositório para CRUD utilizando Spring Data JPA - **Estimativa: 2 horas**
 - [x] Desenvolver o serviço para adicionar um novo cliente, incluindo validações - **Estimativa: 3 horas**
-- [ ] Criar e configurar a camada de controle para receber e responder a solicitações HTTP - **Estimativa: 2 horas**
+- [x] Criar e configurar a camada de controle para receber e responder a solicitações HTTP - **Estimativa: 2 horas**
 - [ ] Escrever testes unitários para a lógica de criação de clientes - **Estimativa: 2 horas**
 
 **Estimativa Total da História: 12 horas**
