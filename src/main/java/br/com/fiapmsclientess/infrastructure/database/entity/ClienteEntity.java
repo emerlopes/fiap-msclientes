@@ -22,7 +22,6 @@ public class ClienteEntity {
     private Long idInterno;
 
     @Column(name = "id_externo")
-    @NotBlank(message = "O id externo do cliente e obrigatorio")
     private UUID idExterno;
 
     @Column(name = "nome")
@@ -31,10 +30,9 @@ public class ClienteEntity {
     @Column(name = "endereco")
     private String endereco;
 
-    @Column(name = "telefone", unique = true)
     private String telefone;
 
-    @Column(name = "email")
+    //    @Column(name = "email", unique = true)
     private String email;
 
     @Column(name = "data_criacao")
