@@ -9,7 +9,7 @@ import lombok.experimental.Accessors;
 
 @Getter
 @Accessors(chain = true)
-public class Cliente {
+public class ClienteRequestDTO {
 
     @JsonProperty("nome")
     @NotBlank(message = "O nome do cliente e obrigatorio")
