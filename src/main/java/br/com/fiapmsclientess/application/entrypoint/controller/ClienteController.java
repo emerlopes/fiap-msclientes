@@ -27,7 +27,7 @@ public class ClienteController {
     }
 
     @PostMapping
-    public ResponseEntity<?> cadastrarCliente(
+    public ResponseEntity<ClienteResponseDTO> cadastrarCliente(
             @RequestHeader("correlation-id") String correlationId,
             @RequestHeader("flow-id") String flowId,
             @RequestHeader("Content-Type") String contentType,
