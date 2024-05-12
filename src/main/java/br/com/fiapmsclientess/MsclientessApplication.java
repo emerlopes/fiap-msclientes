@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class FiapMsclientessApplication {
+public class MsclientessApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(FiapMsclientessApplication.class, args);
+        SpringApplication.run(MsclientessApplication.class, args);
     }
 
 }
