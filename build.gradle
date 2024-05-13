@@ -8,7 +8,7 @@ group = 'br.com'
 version = '0.0.1-SNAPSHOT'
 
 java {
-    sourceCompatibility = '21'
+    sourceCompatibility = '17'
 }
 
 configurations {
@@ -22,7 +22,17 @@ repositories {
 }
 
 ext {
-    set('springCloudVersion', "2023.0.1")
+    springCloudVersion = '2023.0.1'
+    springBootVersion = '2.5.0'
+    log4jVersion = '2.23.1'
+    lombokVersion = '1.18.20'
+    h2Version = '1.4.200'
+    mockitoVersion = '5.12.0'
+    hamcrestVersion = '2.2'
+    cucumberVersion = '7.17.0'
+    restAssuredVersion = '5.4.0'
+    junitPlatformSuiteVersion = '1.10.2'
+    jacksonDatabindVersion = '2.16.1'
 }
 
 dependencies {
@@ -31,14 +41,23 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
-    implementation 'org.apache.logging.log4j:log4j-api:2.23.1'
-    implementation 'org.apache.logging.log4j:log4j-core:2.23.1'
+    implementation "org.apache.logging.log4j:log4j-api:$log4jVersion"
+    implementation "org.apache.logging.log4j:log4j-core:$log4jVersion"
 
-    testImplementation group: 'org.mockito', name: 'mockito-core', version: '5.12.0'
+    testImplementation "org.mockito:mockito-core:$mockitoVersion"
 
-    compileOnly 'org.projectlombok:lombok'
-    runtimeOnly 'com.h2database:h2'
-    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation "io.cucumber:cucumber-java:$cucumberVersion"
+    testImplementation "io.cucumber:cucumber-junit-platform-engine:$cucumberVersion"
+
+    testImplementation group: 'org.junit.platform', name: 'junit-platform-suite', version: junitPlatformSuiteVersion
+
+    testImplementation("io.rest-assured:rest-assured:$restAssuredVersion") {
+        exclude group: 'org.codehaus.jackson', module: 'jackson-mapper-asl'
+    }
+
+    compileOnly "org.projectlombok:lombok:$lombokVersion"
+    runtimeOnly "com.h2database:h2:$h2Version"
+    annotationProcessor "org.projectlombok:lombok:$lombokVersion"
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
