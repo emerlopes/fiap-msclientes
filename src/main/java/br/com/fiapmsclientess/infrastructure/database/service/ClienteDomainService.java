@@ -10,6 +10,7 @@ import br.com.fiapmsclientess.infrastructure.database.repository.ClinteRepositor
 import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
@@ -91,6 +92,8 @@ public class ClienteDomainService implements ClienteDomainRepository {
         cliente.setEndereco(clienteDomainEntity.getEndereco());
         cliente.setTelefone(clienteDomainEntity.getTelefone());
         cliente.setEmail(clienteDomainEntity.getEmail());
+
+        cliente.setDataAtualizacao(LocalDateTime.now());
 
         final var retornoEntidade = clinteRepository.save(cliente);
 
