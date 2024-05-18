@@ -31,11 +31,11 @@ jobs:
       - name: Save build output
         run: echo "build_output=successful" >> $GITHUB_STATE
 
+      - name: Print current directory path
+        run: pwd
+
       - name: List files in build/libs directory
         run: ls -la build/libs
-
-      - name: List all files in the repository after build
-        run: ls -laR
 
   docker:
     needs: build
@@ -56,11 +56,11 @@ jobs:
       - name: Print current directory path
         run: pwd
 
-      - name: List files in build/libs directory before Docker build
-        run: ls -la build/libs
+      - name: voltar uma pasta
+        run: cd ..
 
-      - name: List all files in the repository before Docker build
-        run: ls -laR
+      - name: Print current directory path
+        run: pwd
 
       - name: Build and push to Docker Hub
         uses: docker/build-push-action@v2
