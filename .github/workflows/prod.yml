@@ -56,8 +56,14 @@ jobs:
       - name: Print current directory path
         run: pwd
 
+      - name: List files in directory
+        run: ls
+
       - name: voltar uma pasta
         run: cd ..
+
+      - name: List files in directory
+        run: ls
 
       - name: Print current directory path
         run: pwd
