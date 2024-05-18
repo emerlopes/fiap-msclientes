@@ -12,4 +12,6 @@ public interface ClinteRepository extends JpaRepository<ClienteEntity, Long> {
 
     Optional<ClienteEntity> findByIdExterno(UUID idExterno);
 
+    void deleteByIdExterno(UUID idExterno);
+
 }

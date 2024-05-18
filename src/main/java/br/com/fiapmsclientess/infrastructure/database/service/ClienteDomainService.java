@@ -4,6 +4,7 @@ import br.com.fiapmsclientess.application.exception.BusinessException;
 import br.com.fiapmsclientess.domain.entity.ClienteDomainEntity;
 
 import br.com.fiapmsclientess.domain.repository.ClienteDomainRepository;
+import br.com.fiapmsclientess.infrastructure.database.entity.ClienteEntity;
 import br.com.fiapmsclientess.infrastructure.database.mapper.ClienteEntityMapper;
 import br.com.fiapmsclientess.infrastructure.database.repository.ClinteRepository;
 import org.slf4j.Logger;
@@ -47,23 +48,36 @@ public class ClienteDomainService implements ClienteDomainRepository {
     ) {
 
         logger.info("Buscando cliente por id externo: {}",
-                clienteDomainEntity.getNome(),
                 clienteDomainEntity.getIdExterno()
         );
 
         final var idExterno = clienteDomainEntity.getIdExterno();
-        final var retornoEntidade = clinteRepository.findByIdExterno(idExterno);
-
-        if (retornoEntidade.isEmpty()) {
-            logger.info("Cliente não encontrado: {}", idExterno);
-            throw new BusinessException("Cliente não encontrado");
-        }
-
-        final var cliente = retornoEntidade.get();
+        final var cliente = buscarClientePorIdExterno(idExterno);
 
         logger.info("Cliente encontrado: {}", cliente.getNome());
 
         return ClienteDomainEntity.paraEntidadeDominio(cliente);
+    }
+
+    @Override
+    public void deletarClientePorIdExterno(ClienteDomainEntity clienteDomainEntity) {
+
+        logger.info("Deletando cliente por id externo: {}",
+                clienteDomainEntity.getIdExterno()
+        );
+
+        final var idExterno = clienteDomainEntity.getIdExterno();
+        final var cliente = buscarClientePorIdExterno(idExterno);
+
+        clinteRepository.delete(cliente);
+
+        logger.info("Cliente deletado com sucesso: {}", idExterno);
+
+    }
+
+    private ClienteEntity buscarClientePorIdExterno(UUID idExterno) {
+        return clinteRepository.findByIdExterno(idExterno)
+                .orElseThrow(() -> new BusinessException("Cliente não encontrado"));
     }
 
 }

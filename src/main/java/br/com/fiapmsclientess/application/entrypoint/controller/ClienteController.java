@@ -5,6 +5,7 @@ import br.com.fiapmsclientess.application.dto.ClienteResponseDTO;
 import br.com.fiapmsclientess.domain.entity.ClienteDomainEntity;
 import br.com.fiapmsclientess.domain.usecase.BuscarClientePorIdUseCase;
 import br.com.fiapmsclientess.domain.usecase.CadastrarClienteUseCase;
+import br.com.fiapmsclientess.domain.usecase.DeletarClientePorIdUseCase;
 import jakarta.validation.Valid;
 import lombok.Getter;
 import org.slf4j.Logger;
@@ -22,14 +23,18 @@ public class ClienteController {
 
     private final BuscarClientePorIdUseCase buscarClientePorIdUseCase;
 
+    private final DeletarClientePorIdUseCase deletarClientePorIdUseCase;
+
     public ClienteController(
             final Logger logger,
             final CadastrarClienteUseCase cadastrarClienteUseCase,
-            final BuscarClientePorIdUseCase buscarClientePorIdUseCase
+            final BuscarClientePorIdUseCase buscarClientePorIdUseCase,
+            final DeletarClientePorIdUseCase deletarClientePorIdUseCase
     ) {
         this.logger = logger;
         this.cadastrarClienteUseCase = cadastrarClienteUseCase;
         this.buscarClientePorIdUseCase = buscarClientePorIdUseCase;
+        this.deletarClientePorIdUseCase = deletarClientePorIdUseCase;
     }
 
     @PostMapping
@@ -83,5 +88,21 @@ public class ClienteController {
                         .dataAtualizacao(cliente.getDataAtualizacao())
                         .build()
                 );
+    }
+
+    @DeleteMapping({"/{idExterno}"})
+    public ResponseEntity<Void> deletarClientePorIdExterno(
+            @RequestHeader("correlation-id") String correlationId,
+            @RequestHeader("flow-id") String flowId,
+            @RequestHeader("Content-Type") String contentType,
+            @PathVariable("idExterno") String idExterno
+    ) {
+        logger.info("Chamando endpoint de deletar cliente por idExterno: /clientes/{idExterno}");
+
+        final var entidadeDominio = ClienteDomainEntity.paraEntidadeDominio(idExterno);
+
+        deletarClientePorIdUseCase.execute(entidadeDominio);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

@@ -8,4 +8,6 @@ public interface ClienteDomainRepository {
 
     ClienteDomainEntity buscarClientePorIdExterno(ClienteDomainEntity clienteDomainEntity);
 
+    void deletarClientePorIdExterno(ClienteDomainEntity clienteDomainEntity);
+
 }
