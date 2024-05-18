@@ -15,4 +15,9 @@ public class GlobalExceptionHandler {
         String errorMessage = fieldError.getDefaultMessage();
         return ResponseEntity.badRequest().body(errorMessage);
     }
+
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<?> handleBusinessExceptions(BusinessException ex) {
+        return ResponseEntity.unprocessableEntity().body(ex.getMessage());
+    }
 }

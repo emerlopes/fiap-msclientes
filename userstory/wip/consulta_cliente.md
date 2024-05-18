@@ -10,8 +10,8 @@
 3. Caso o cliente não seja encontrado, o sistema deve retornar uma mensagem de erro adequada.
 
 ### Tarefas
-- [ ] Desenvolver o método no serviço que permita buscar todos os clientes e por ID - **Estimativa: 2 horas**
-- [ ] Implementar as rotas na camada de controle para buscar todos os clientes e por ID - **Estimativa: 1 hora**
-- [ ] Escrever testes unitários para a funcionalidade de busca de clientes - **Estimativa: 2 horas**
+- [x] Desenvolver o método no serviço que permita buscar todos os clientes e por ID - **Estimativa: 2 horas**
+- [x] Implementar as rotas na camada de controle para buscar todos os clientes e por ID - **Estimativa: 1 hora**
+- [x] Escrever testes unitários para a funcionalidade de busca de clientes - **Estimativa: 2 horas**
 
 **Estimativa Total da História: 5 horas**

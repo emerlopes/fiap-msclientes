@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -52,6 +53,63 @@ class ClienteDomainServiceTest {
         Assertions.assertThat(entidadeCriada.getDataCriacao()).isEqualTo(clienteDomainEntity.getDataCriacao()).describedAs("Data de criação deve ser igual");
         Assertions.assertThat(entidadeCriada.getDataAtualizacao()).isEqualTo(clienteDomainEntity.getDataAtualizacao()).describedAs("Data de atualização deve ser igual");
 
+    }
+
+    @Test
+    void deveBuscarClientePorId() {
+        // Arrange
+        final var clienteDomainEntity = criarClienteDomainEntity();
+        final var entidade = criarEntity(clienteDomainEntity);
+
+        Mockito.when(clinteRepository.findByIdExterno(Mockito.any(UUID.class))).thenReturn(Optional.of(entidade));
+
+        // Act
+        final var entidadeCriada = clienteDomainService.buscarClientePorIdExterno(clienteDomainEntity);
+
+        // Assert
+        Mockito.verify(logger, Mockito.times(1)).info("Buscando cliente por id externo: {}", clienteDomainEntity.getIdExterno());
+        Assertions.assertThat(entidadeCriada).isNotNull().describedAs("Entidade criada não pode ser nula");
+        Assertions.assertThat(entidadeCriada.getNome()).isEqualTo(clienteDomainEntity.getNome()).describedAs("Nome deve ser igual");
+        Assertions.assertThat(entidadeCriada.getEndereco()).isEqualTo(clienteDomainEntity.getEndereco()).describedAs("Endereço deve ser igual");
+        Assertions.assertThat(entidadeCriada.getTelefone()).isEqualTo(clienteDomainEntity.getTelefone()).describedAs("Telefone deve ser igual");
+        Assertions.assertThat(entidadeCriada.getEmail()).isEqualTo(clienteDomainEntity.getEmail()).describedAs("Email deve ser igual");
+        Assertions.assertThat(entidadeCriada.getDataCriacao()).isEqualTo(clienteDomainEntity.getDataCriacao()).describedAs("Data de criação deve ser igual");
+        Assertions.assertThat(entidadeCriada.getDataAtualizacao()).isEqualTo(clienteDomainEntity.getDataAtualizacao()).describedAs("Data de atualização deve ser igual");
+    }
+
+    @Test
+    void deveRetornarErroAoBuscarClientePorId() {
+        // Arrange
+        final var clienteDomainEntity = criarClienteDomainEntity();
+
+        Mockito.when(clinteRepository.findByIdExterno(Mockito.any(UUID.class))).thenReturn(Optional.empty());
+
+        // Act
+        final var exception = assertThrows(RuntimeException.class, () -> clienteDomainService.buscarClientePorIdExterno(clienteDomainEntity));
+
+        // Assert
+        Mockito.verify(logger, Mockito.times(1)).info(
+                "Buscando cliente por id externo: {}",
+                clienteDomainEntity.getIdExterno()
+        );
+        Assertions.assertThat(exception).isNotNull().describedAs("Exceção não pode ser nula");
+        Assertions.assertThat(exception.getMessage()).isEqualTo("Cliente não encontrado").describedAs("Mensagem de erro deve ser igual");
+    }
+
+    @Test
+    void deveDeletarClientePorId() {
+        // Arrange
+        final var clienteDomainEntity = criarClienteDomainEntity();
+        final var entidade = criarEntity(clienteDomainEntity);
+
+        Mockito.when(clinteRepository.findByIdExterno(Mockito.any(UUID.class))).thenReturn(Optional.of(entidade));
+
+        // Act
+        clienteDomainService.deletarClientePorIdExterno(clienteDomainEntity);
+
+        // Assert
+        Mockito.verify(logger, Mockito.times(1)).info("Deletando cliente por id externo: {}", clienteDomainEntity.getIdExterno());
+        Mockito.verify(clinteRepository, Mockito.times(1)).delete(entidade);
     }
 
     private ClienteDomainEntity criarClienteDomainEntity() {

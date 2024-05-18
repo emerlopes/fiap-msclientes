@@ -31,4 +31,29 @@ Funcionalidade: Cliente
       | Joao | Rua 1    | (11) 91234-5678 | emailmail.com  | O email do cliente e invalido       |
 
 
+  Esquema do Cenario: Buscar cliente por id
+    Dado que eu tenha um cliente cadastrado
+      | nome   | endereco   | telefone   | email   |
+      | <nome> | <endereco> | <telefone> | <email> |
+    Quando eu enviar uma requisicao GET para '/clientes/{id}'
+    Entao a resposta deve ter o codigo de status 200
+    E a resposta deve ter os dados do cliente: nome, endereco, telefone e email
+
+    Exemplos:
+      | nome | endereco | telefone        | email          |
+      | Joao | Rua 1    | (11) 91234-5678 | joao@email.com |
+
+  Esquema do Cenario: Deletar cliente por id
+    Dado que eu tenha um cliente cadastrado
+      | nome   | endereco   | telefone   | email   |
+      | <nome> | <endereco> | <telefone> | <email> |
+    Quando eu enviar uma requisicao DELETE para '/clientes/{id}'
+    Entao a resposta deve ter o codigo de status 204
+
+    Exemplos:
+      | nome | endereco | telefone        | email          |
+      | Joao | Rua 1    | (11) 91234-5678 | joao@email.com |
+
+
+
 

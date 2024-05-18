@@ -38,7 +38,6 @@ public class ClienteDomainEntity {
             final ClienteRequestDTO clienteRequestDTO
     ) {
         return ClienteDomainEntity.builder()
-                .idExterno(UUID.randomUUID())
                 .nome(clienteRequestDTO.getNome())
                 .endereco(clienteRequestDTO.getEndereco())
                 .telefone(clienteRequestDTO.getTelefone())
@@ -48,10 +47,18 @@ public class ClienteDomainEntity {
     }
 
     public static ClienteDomainEntity paraEntidadeDominio(
+            final String idExterno
+    ) {
+        return ClienteDomainEntity.builder()
+                .idExterno(UUID.fromString(idExterno))
+                .build();
+    }
+
+    public static ClienteDomainEntity paraEntidadeDominio(
             final ClienteEntity clienteEntity
     ) {
         return ClienteDomainEntity.builder()
-                .idExterno(UUID.randomUUID())
+                .idExterno(clienteEntity.getIdExterno())
                 .nome(clienteEntity.getNome())
                 .endereco(clienteEntity.getEndereco())
                 .telefone(clienteEntity.getTelefone())

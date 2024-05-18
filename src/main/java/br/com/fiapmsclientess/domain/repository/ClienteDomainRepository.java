@@ -6,4 +6,8 @@ public interface ClienteDomainRepository {
 
     ClienteDomainEntity cadastrarCliente(ClienteDomainEntity clienteDomainEntity);
 
+    ClienteDomainEntity buscarClientePorIdExterno(ClienteDomainEntity clienteDomainEntity);
+
+    void deletarClientePorIdExterno(ClienteDomainEntity clienteDomainEntity);
+
 }

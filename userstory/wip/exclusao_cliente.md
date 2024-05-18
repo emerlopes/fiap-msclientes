@@ -10,8 +10,8 @@
 3. A exclusão deve ser segura para evitar a remoção acidental de dados.
 
 ### Tarefas
-- [ ] Desenvolver o método no serviço que permite a exclusão de um cliente - **Estimativa: 2 horas**
-- [ ] Implementar as rotas na camada de controle para excluir um cliente por ID - **Estimativa: 1 hora**
-- [ ] Escrever testes unitários para a funcionalidade de exclusão de clientes - **Estimativa: 2 horas**
+- [x] Desenvolver o método no serviço que permite a exclusão de um cliente - **Estimativa: 2 horas**
+- [x] Implementar as rotas na camada de controle para excluir um cliente por ID - **Estimativa: 1 hora**
+- [X] Escrever testes unitários para a funcionalidade de exclusão de clientes - **Estimativa: 2 horas**
 
 **Estimativa Total da História: 5 horas**
