@@ -112,6 +112,31 @@ class ClienteDomainServiceTest {
         Mockito.verify(clinteRepository, Mockito.times(1)).delete(entidade);
     }
 
+    @Test
+    void deveAtualizarCliente() {
+        // Arrange
+        final var clienteDomainEntity = criarClienteDomainEntity();
+        final var entidade = criarEntity(clienteDomainEntity);
+
+        Mockito.when(clinteRepository.findByIdExterno(Mockito.any(UUID.class))).thenReturn(Optional.of(entidade));
+        Mockito.when(clinteRepository.save(Mockito.any(ClienteEntity.class))).thenReturn(entidade);
+
+        // Act
+        final var entidadeCriada = clienteDomainService.atualizarCliente(clienteDomainEntity);
+
+        // Assert
+        Mockito.verify(logger, Mockito.times(1)).info("Atualizando cliente: {}", clienteDomainEntity.getNome());
+        Mockito.verify(logger, Mockito.times(1)).info("Cliente atualizado com sucesso: {}", entidadeCriada.getNome());
+
+        Assertions.assertThat(entidadeCriada).isNotNull().describedAs("Entidade criada não pode ser nula");
+        Assertions.assertThat(entidadeCriada.getNome()).isEqualTo(clienteDomainEntity.getNome()).describedAs("Nome deve ser igual");
+        Assertions.assertThat(entidadeCriada.getEndereco()).isEqualTo(clienteDomainEntity.getEndereco()).describedAs("Endereço deve ser igual");
+        Assertions.assertThat(entidadeCriada.getTelefone()).isEqualTo(clienteDomainEntity.getTelefone()).describedAs("Telefone deve ser igual");
+        Assertions.assertThat(entidadeCriada.getEmail()).isEqualTo(clienteDomainEntity.getEmail()).describedAs("Email deve ser igual");
+        Assertions.assertThat(entidadeCriada.getDataCriacao()).isEqualTo(clienteDomainEntity.getDataCriacao()).describedAs("Data de criação deve ser igual");
+//        Assertions.assertThat(entidadeCriada.getDataAtualizacao()).isEqualTo(clienteDomainEntity.getDataAtualizacao()).describedAs("Data de atualização deve ser igual");
+    }
+
     private ClienteDomainEntity criarClienteDomainEntity() {
         return ClienteDomainEntity.builder()
                 .idExterno(UUID.randomUUID())

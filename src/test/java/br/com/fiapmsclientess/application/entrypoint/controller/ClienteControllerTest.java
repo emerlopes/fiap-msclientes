@@ -2,6 +2,7 @@ package br.com.fiapmsclientess.application.entrypoint.controller;
 
 import br.com.fiapmsclientess.application.dto.ClienteRequestDTO;
 import br.com.fiapmsclientess.domain.entity.ClienteDomainEntity;
+import br.com.fiapmsclientess.domain.usecase.AtualizarClienteUseCase;
 import br.com.fiapmsclientess.domain.usecase.BuscarClientePorIdUseCase;
 import br.com.fiapmsclientess.domain.usecase.CadastrarClienteUseCase;
 import br.com.fiapmsclientess.domain.usecase.DeletarClientePorIdUseCase;
@@ -32,6 +33,9 @@ class ClienteControllerTest {
 
     @Mock
     BuscarClientePorIdUseCase buscarClientePorIdUseCase;
+
+    @Mock
+    AtualizarClienteUseCase atualizarClienteUseCase;
 
     @Mock
     DeletarClientePorIdUseCase deletarClientePorIdUseCase;
@@ -114,6 +118,30 @@ class ClienteControllerTest {
         final var clienteResponseDTO = clienteResponse.getBody();
 
         Assertions.assertThat(clienteResponseDTO).isNull();
+    }
+
+    @Test
+    void deveAtualizarClienteComSucesso() {
+        // ARRANGE
+        final var clienteRequestDTO = criarClienteRequestDTO();
+        final var clienteDomainEntity = criarClienteDomainEntity();
+        Mockito.when(atualizarClienteUseCase.execute(Mockito.any(ClienteDomainEntity.class))).thenReturn(clienteDomainEntity);
+
+        // ACT
+        final var clienteResponse = clienteController.atualizarCliente(
+                "correlation-id",
+                "flow-id",
+                "Content-Type",
+                clienteDomainEntity.getIdExterno().toString(),
+                clienteRequestDTO
+        );
+
+        // ASSERT
+
+        final var clienteResponseDTO = clienteResponse.getBody();
+
+        Mockito.verify(atualizarClienteUseCase, Mockito.times(1)).execute(Mockito.any(ClienteDomainEntity.class));
+
     }
 
     private ClienteRequestDTO criarClienteRequestDTO() {

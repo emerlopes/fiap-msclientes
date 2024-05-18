@@ -10,6 +10,7 @@ import br.com.fiapmsclientess.infrastructure.database.repository.ClinteRepositor
 import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
@@ -60,7 +61,9 @@ public class ClienteDomainService implements ClienteDomainRepository {
     }
 
     @Override
-    public void deletarClientePorIdExterno(ClienteDomainEntity clienteDomainEntity) {
+    public void deletarClientePorIdExterno(
+            final ClienteDomainEntity clienteDomainEntity
+    ) {
 
         logger.info("Deletando cliente por id externo: {}",
                 clienteDomainEntity.getIdExterno()
@@ -73,6 +76,30 @@ public class ClienteDomainService implements ClienteDomainRepository {
 
         logger.info("Cliente deletado com sucesso: {}", idExterno);
 
+    }
+
+    @Override
+    public ClienteDomainEntity atualizarCliente(
+            final ClienteDomainEntity clienteDomainEntity
+    ) {
+
+        logger.info("Atualizando cliente: {}", clienteDomainEntity.getNome());
+
+        final var idExterno = clienteDomainEntity.getIdExterno();
+        final var cliente = buscarClientePorIdExterno(idExterno);
+
+        cliente.setNome(clienteDomainEntity.getNome());
+        cliente.setEndereco(clienteDomainEntity.getEndereco());
+        cliente.setTelefone(clienteDomainEntity.getTelefone());
+        cliente.setEmail(clienteDomainEntity.getEmail());
+
+        cliente.setDataAtualizacao(LocalDateTime.now());
+
+        final var retornoEntidade = clinteRepository.save(cliente);
+
+        logger.info("Cliente atualizado com sucesso: {}", retornoEntidade.getNome());
+
+        return ClienteDomainEntity.paraEntidadeDominio(retornoEntidade);
     }
 
     private ClienteEntity buscarClientePorIdExterno(UUID idExterno) {
