@@ -58,35 +58,35 @@ jobs:
       - name: Set docker image output
         run: echo "docker_image=${{ secrets.DOCKER_USERNAME }}/spring-boot-docker:${{ github.sha }}" >> $GITHUB_OUTPUT
 
-  deploy:
-    needs: docker
-    runs-on: self-hosted
-    env:
-      DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
-      DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-      CONTAINER_NAME: ms-driver
-    steps:
-      - name: Pull image from Docker Hub
-        run: echo "docker_image=${{ secrets.DOCKER_USERNAME }}/spring-boot-docker:${{ github.sha }}" >> $GITHUB_OUTPUT
-
-      - name: Show environment variables
-        run: |
-          echo "DATABASE_URL: $DATABASE_URL"
-          echo "DATABASE_USERNAME: $DATABASE_USERNAME"
-          echo "DATABASE_PASSWORD: $DATABASE_PASSWORD"
-
-      - name: Stop and remove the previous container
-        run: |
-          sudo docker stop $CONTAINER_NAME || true
-          sudo docker rm $CONTAINER_NAME || true
-
-      - name: Run docker container
-        run: |
-          sudo docker run -d \
-            --name $CONTAINER_NAME \
-            -p 8080:8080 \
-            -e DATABASE_URL=$DATABASE_URL \
-            -e DATABASE_USERNAME=$DATABASE_USERNAME \
-            -e DATABASE_PASSWORD=$DATABASE_PASSWORD \
-            ${{ secrets.DOCKER_USERNAME }}/spring-boot-docker:${{ github.sha }}
+#  deploy:
+#    needs: docker
+#    runs-on: self-hosted
+#    env:
+#      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+#      DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+#      DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+#      CONTAINER_NAME: ms-driver
+#    steps:
+#      - name: Pull image from Docker Hub
+#        run: echo "docker_image=${{ secrets.DOCKER_USERNAME }}/spring-boot-docker:${{ github.sha }}" >> $GITHUB_OUTPUT
+#
+#      - name: Show environment variables
+#        run: |
+#          echo "DATABASE_URL: $DATABASE_URL"
+#          echo "DATABASE_USERNAME: $DATABASE_USERNAME"
+#          echo "DATABASE_PASSWORD: $DATABASE_PASSWORD"
+#
+#      - name: Stop and remove the previous container
+#        run: |
+#          sudo docker stop $CONTAINER_NAME || true
+#          sudo docker rm $CONTAINER_NAME || true
+#
+#      - name: Run docker container
+#        run: |
+#          sudo docker run -d \
+#            --name $CONTAINER_NAME \
+#            -p 8080:8080 \
+#            -e DATABASE_URL=$DATABASE_URL \
+#            -e DATABASE_USERNAME=$DATABASE_USERNAME \
+#            -e DATABASE_PASSWORD=$DATABASE_PASSWORD \
+#            ${{ secrets.DOCKER_USERNAME }}/spring-boot-docker:${{ github.sha }}
