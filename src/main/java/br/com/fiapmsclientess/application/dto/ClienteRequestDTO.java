@@ -4,12 +4,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 
 @Getter
+@Builder
 @Accessors(chain = true)
-public class Cliente {
+public class ClienteRequestDTO {
 
     @JsonProperty("nome")
     @NotBlank(message = "O nome do cliente e obrigatorio")
