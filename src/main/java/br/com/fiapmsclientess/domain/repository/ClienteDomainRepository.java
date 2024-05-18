@@ -10,4 +10,6 @@ public interface ClienteDomainRepository {
 
     void deletarClientePorIdExterno(ClienteDomainEntity clienteDomainEntity);
 
+    ClienteDomainEntity atualizarCliente(ClienteDomainEntity clienteDomainEntity);
+
 }

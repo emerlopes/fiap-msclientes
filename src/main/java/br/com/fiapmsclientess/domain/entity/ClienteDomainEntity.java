@@ -15,6 +15,7 @@ import java.util.UUID;
 public class ClienteDomainEntity {
 
     @NotBlank(message = "O id externo do cliente e obrigatorio")
+    @Setter
     private UUID idExterno;
 
     @NotBlank(message = "O nome do cliente e obrigatorio")

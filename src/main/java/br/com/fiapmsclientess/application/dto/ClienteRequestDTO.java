@@ -1,5 +1,6 @@
 package br.com.fiapmsclientess.application.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -11,6 +12,7 @@ import lombok.experimental.Accessors;
 @Getter
 @Builder
 @Accessors(chain = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ClienteRequestDTO {
 
     @JsonProperty("nome")
@@ -30,4 +32,7 @@ public class ClienteRequestDTO {
     @NotBlank(message = "O email do cliente e obrigatorio")
     @Email(message = "O email do cliente e invalido")
     private String email;
+
+    @JsonProperty("id_externo")
+    private String idExterno;
 }
