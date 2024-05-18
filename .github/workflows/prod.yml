@@ -1,0 +1,71 @@
+name: Deploy to production
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build and push to Docker Hub
+        uses: actions/checkout@v2
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+          cache: gradle
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      - name: Login Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push to Docker Hub
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/spring-boot-docker:${{ github.sha }}
+          build-args: |
+            --build-arg DATABASE_URL=$DATABASE_URL
+            --build-arg DATABASE_USERNAME=$DATABASE_USERNAME
+            --build-arg DATABASE_PASSWORD=$DATABASE_PASSWORD
+  deploy:
+    needs: build
+    runs-on: self-hosted
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+      DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+      CONTAINER_NAME: ms-driver
+    steps:
+      - name: Pull image from Docker Hub
+        uses: docker/metadata-action@v3
+        with:
+          images: ${{ secrets.DOCKER_USERNAME }}/spring-boot-docker:${{ github.sha }}
+      - name: Show environment variables
+        run: |
+          echo "DATABASE_URL: $DATABASE_URL"
+          echo "DATABASE_USERNAME: $DATABASE_USERNAME"
+          echo "DATABASE_PASSWORD: $DATABASE_PASSWORD"
+      - name: Stop and remove the previous container
+        run: |
+          sudo docker stop $CONTAINER_NAME || true
+          sudo docker rm $CONTAINER_NAME || true
+      - name: Run docker container
+        run: |
+          sudo docker run -d \
+            --name $CONTAINER_NAME \
+            -p 8080:8080 \
+            -e DATABASE_URL=$DATABASE_URL \
+            -e DATABASE_USERNAME=$DATABASE_USERNAME \
+            -e DATABASE_PASSWORD=$DATABASE_PASSWORD \
+            ${{ secrets.DOCKER_USERNAME }}/spring-boot-docker:${{ github.sha }}
