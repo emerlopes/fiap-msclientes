@@ -55,9 +55,11 @@ dependencies {
         exclude group: 'org.codehaus.jackson', module: 'jackson-mapper-asl'
     }
 
-    compileOnly "org.projectlombok:lombok:$lombokVersion"
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
     runtimeOnly "com.h2database:h2:$h2Version"
-    annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
