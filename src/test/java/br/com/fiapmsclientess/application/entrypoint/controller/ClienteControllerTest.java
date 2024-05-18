@@ -4,6 +4,7 @@ import br.com.fiapmsclientess.application.dto.ClienteRequestDTO;
 import br.com.fiapmsclientess.domain.entity.ClienteDomainEntity;
 import br.com.fiapmsclientess.domain.usecase.BuscarClientePorIdUseCase;
 import br.com.fiapmsclientess.domain.usecase.CadastrarClienteUseCase;
+import br.com.fiapmsclientess.domain.usecase.DeletarClientePorIdUseCase;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,6 +32,9 @@ class ClienteControllerTest {
 
     @Mock
     BuscarClientePorIdUseCase buscarClientePorIdUseCase;
+
+    @Mock
+    DeletarClientePorIdUseCase deletarClientePorIdUseCase;
 
     @Test
     void deveCadastrarClienteComSucesso() {
@@ -90,6 +94,26 @@ class ClienteControllerTest {
         Assertions.assertThat(clienteResponseDTO.getEndereco()).isEqualTo(clienteDomainEntity.getEndereco()).describedAs("Endereço deve ser igual ao endereço do request");
         Assertions.assertThat(clienteResponseDTO.getTelefone()).isEqualTo(clienteDomainEntity.getTelefone()).describedAs("Telefone deve ser igual ao telefone do request");
         Assertions.assertThat(clienteResponseDTO.getEmail()).isEqualTo(clienteDomainEntity.getEmail()).describedAs("Email deve ser igual ao email do request");
+    }
+
+    @Test
+    void deveDeletarClientePorIdComSucesso() {
+        // ARRANGE
+        final var clienteDomainEntity = criarClienteDomainEntity();
+
+        // ACT
+        final var clienteResponse = clienteController.deletarClientePorIdExterno(
+                "correlation-id",
+                "flow-id",
+                "Content-Type",
+                clienteDomainEntity.getIdExterno().toString()
+        );
+
+        // ASSERT
+
+        final var clienteResponseDTO = clienteResponse.getBody();
+
+        Assertions.assertThat(clienteResponseDTO).isNull();
     }
 
     private ClienteRequestDTO criarClienteRequestDTO() {

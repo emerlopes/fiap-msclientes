@@ -65,6 +65,13 @@ public class CadastrarClienteStepDefinition {
         response = requestSpec.get();
     }
 
+    @Quando("eu enviar uma requisicao DELETE para {string}")
+    public void eu_enviar_uma_requisicao_delete_para(String rota) {
+        final var rotaFormatada = rota.replace("{id}", idExterno.toString());
+        final var requestSpec = getRequestSpec(rotaFormatada, null, null);
+        response = requestSpec.delete();
+    }
+
     @Quando("eu enviar uma requisicao POST para {string} com os dados do cliente")
     public void eu_enviar_uma_requisicao_post_para_com_os_dados_do_cliente(String rota) {
         final var requestSpec = getRequestSpec(rota, clienteRequestDTO, null);
