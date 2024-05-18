@@ -2,6 +2,7 @@ package br.com.fiapmsclientess.application.entrypoint.controller;
 
 import br.com.fiapmsclientess.application.dto.ClienteRequestDTO;
 import br.com.fiapmsclientess.domain.entity.ClienteDomainEntity;
+import br.com.fiapmsclientess.domain.usecase.BuscarClientePorIdUseCase;
 import br.com.fiapmsclientess.domain.usecase.CadastrarClienteUseCase;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -27,6 +28,9 @@ class ClienteControllerTest {
 
     @Mock
     CadastrarClienteUseCase cadastrarClienteUseCase;
+
+    @Mock
+    BuscarClientePorIdUseCase buscarClientePorIdUseCase;
 
     @Test
     void deveCadastrarClienteComSucesso() {
@@ -58,6 +62,34 @@ class ClienteControllerTest {
         Assertions.assertThat(clienteResponseDTO.getEndereco()).isEqualTo(clienteRequestDTO.getEndereco()).describedAs("Endereço deve ser igual ao endereço do request");
         Assertions.assertThat(clienteResponseDTO.getTelefone()).isEqualTo(clienteRequestDTO.getTelefone()).describedAs("Telefone deve ser igual ao telefone do request");
         Assertions.assertThat(clienteResponseDTO.getEmail()).isEqualTo(clienteRequestDTO.getEmail()).describedAs("Email deve ser igual ao email do request");
+    }
+
+    @Test
+    void deveBuscarClientePorIdComSucesso() {
+        // ARRANGE
+        final var clienteDomainEntity = criarClienteDomainEntity();
+        Mockito.when(buscarClientePorIdUseCase.execute(Mockito.any(ClienteDomainEntity.class))).thenReturn(clienteDomainEntity);
+
+        // ACT
+        final var clienteResponse = clienteController.buscarClientePorIdExterno(
+                "correlation-id",
+                "flow-id",
+                "Content-Type",
+                clienteDomainEntity.getIdExterno().toString()
+        );
+
+        // ASSERT
+
+        final var clienteResponseDTO = clienteResponse.getBody();
+
+        Assertions.assertThat(clienteResponseDTO).isNotNull().describedAs("ClienteResponseDTO não pode ser nulo");
+        Assertions.assertThat(clienteResponseDTO.getDataCriacao()).isNotNull().describedAs("Data de criação não pode ser nula");
+        Assertions.assertThat(clienteResponseDTO.getDataAtualizacao()).describedAs("Data de atualização deve ser nula").isNull();
+        Assertions.assertThat(clienteResponseDTO.getIdExterno()).isNotNull().describedAs("Id externo não pode ser nulo");
+        Assertions.assertThat(clienteResponseDTO.getNome()).isEqualTo(clienteDomainEntity.getNome()).describedAs("Nome deve ser igual ao nome do request");
+        Assertions.assertThat(clienteResponseDTO.getEndereco()).isEqualTo(clienteDomainEntity.getEndereco()).describedAs("Endereço deve ser igual ao endereço do request");
+        Assertions.assertThat(clienteResponseDTO.getTelefone()).isEqualTo(clienteDomainEntity.getTelefone()).describedAs("Telefone deve ser igual ao telefone do request");
+        Assertions.assertThat(clienteResponseDTO.getEmail()).isEqualTo(clienteDomainEntity.getEmail()).describedAs("Email deve ser igual ao email do request");
     }
 
     private ClienteRequestDTO criarClienteRequestDTO() {
